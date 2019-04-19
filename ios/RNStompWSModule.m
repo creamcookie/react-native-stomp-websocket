@@ -94,7 +94,7 @@ RCT_EXPORT_METHOD(connect:(NSURL *)URL protocols:(NSArray *)protocols options:(N
 
 RCT_EXPORT_METHOD(send:(NSString *)message forSocketID:(nonnull NSNumber *)socketID)
 {
-    [_sockets[socketID] send: [message stringByReplacingOccurrencesOfString: @"^@" withString: @"\0" ]];
+    [_sockets[socketID] send: [message stringByReplacingOccurrencesOfString: @"\u0870" withString: @"\0" ]];
 }
 
 RCT_EXPORT_METHOD(sendBinary:(NSString *)base64String forSocketID:(nonnull NSNumber *)socketID)
@@ -147,7 +147,7 @@ RCT_EXPORT_METHOD(close:(nonnull NSNumber *)socketID)
     }
 
     [self sendEventWithName:@"stompWSMessage" body:@{
-                                                       @"data": message,
+                                                       @"data": [message stringByReplacingOccurrencesOfString:@"\0" withString: @"\u0870"],
                                                        @"type": type,
                                                        @"id": webSocket.reactTag
                                                        }];

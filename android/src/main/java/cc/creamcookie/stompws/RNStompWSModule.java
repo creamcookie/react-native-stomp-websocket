@@ -163,9 +163,9 @@ public class RNStompWSModule extends ReactContextBaseJavaModule {
 
                 ContentHandler contentHandler = mContentHandlers.get(id);
                 if (contentHandler != null) {
-                  contentHandler.onMessage(text, params);
+                  contentHandler.onMessage(text.replaceAll("\u0000", "\u0870"), params);
                 } else {
-                  params.putString("data", text);
+                  params.putString("data", text.replaceAll("\u0000", "\u0870"));
                 }
                 sendEvent("stompWSMessage", params);
               }
@@ -229,7 +229,7 @@ public class RNStompWSModule extends ReactContextBaseJavaModule {
       return;
     }
     try {
-      client.send(message.replace("^@", "\u0000"));
+      client.send(message.replaceAll("\u0870", "\u0000"));
     } catch (Exception e) {
       notifyWebSocketFailed(id, e.getMessage());
     }
